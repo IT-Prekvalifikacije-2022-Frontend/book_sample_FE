@@ -1,4 +1,4 @@
-.books_container_header {
+.authors_container_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,25 +13,24 @@
   - ovde je upotrebljen grid raspored i broj kolona ce biti definisan na osnovu sadrzaja koji se nadje u 
   ovom kontejneru, ali ni jedna kolona nece biti ispod 265px 
   */
-  .container_show_books {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-    grid-auto-rows: 180px;
-    grid-gap: 20px;
+  .container_show_authors {
+    display: flex;
+    flex-direction: column;
     margin: 20px;
   }
   
   /* stil za karticu u kojoj je prikazan pregled, za organizaciju rasporeda iskoriscen je flex raspored */
-  .book_overviewcard {
+  .author_overviewcard {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #fff;
     border: 1px solid gray;
     border-radius: 5px;
+    margin-bottom: 10px;
   }
 
-  .book_title_container {
+  .author_title_container {
     color: gray;
     background-color: whitesmoke;
     width: 100%;
@@ -39,14 +38,15 @@
     border: 1px solid gray;
   }
 
-  .book__info{
+  .author__info{
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    justify-content: start;
     padding: 5px;
+    width: 100%;
+    margin-left: 20px;
   }
 
-  .book_title {
+  .author_title {
     /* padding: 3px; */
     text-align: center;
     font-size: 15px;

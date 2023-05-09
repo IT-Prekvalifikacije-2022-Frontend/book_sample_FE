@@ -7,6 +7,9 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ShowBooks from './book/ShowBooks';
 import ShowAuthors from './author/ShowAuthors';
 import ShowGenres from './genre/ShowGenres';
+import NewGenre from './genre/NewGenre';
+import NewAuthor from './author/NewAuthor';
+import NewBook from './book/NewBook';
 
 const router = createBrowserRouter([
   {
@@ -15,15 +18,36 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'books',
-        element: <ShowBooks/>
+        element: <ShowBooks/>,
+        loader: async() => {
+          return fetch('http://localhost:8080/api/v1/book');
+        }
       },
       {
         path: 'authors',
-        element: <ShowAuthors/>
+        element: <ShowAuthors/>,
+        loader: async() => {
+          return fetch('http://localhost:8080/api/v1/author');
+        }
       },
       {
         path: 'genres',
-        element: <ShowGenres/>
+        element: <ShowGenres/>,
+        loader: async() => {
+          return fetch('http://localhost:8080/api/v1/genre');
+        }
+      },
+      {
+        path:'genres/add_new',
+        element: <NewGenre/>
+      },
+      {
+        path:'authors/add_new',
+        element: <NewAuthor/>
+      },
+      {
+        path:'books/add_new',
+        element: <NewBook/>
       }
     ]
   }

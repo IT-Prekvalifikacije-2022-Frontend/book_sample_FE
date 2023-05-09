@@ -1,25 +1,49 @@
+import { NavLink, useLoaderData } from 'react-router-dom';
 import ShowBook from './ShowBook';
 import './show_books.css'
-const ShowBooks = () => {
-    // samo za kreiranje css-a napravicu dummy podatke 
-    const books = [
-        {title: 'Na Drini Cuprija', isbn: '1213j34h5jhj6', authors:['Ivo Andric'], year: 1945, rating: 9, genre: 'roman'},
-        {title: 'Rat i mir', isbn: '1213j34h5jhj6', authors:['Lav Tolstoj'], year: 1869, rating: 9, genre: 'roman'},
-        {title: 'Od pasnjaka do naucenjaka', isbn: '1213j34h5jhj6', authors:['Mihailo Pupin'], year: 1923, rating: 9, genre: 'autobiografija'},
-        {title: 'Sesir profesora Koste Vujica', isbn: '1213j34h5jhj6', authors:['Milovan Vitezovic'], year: 1978, rating: 9, genre: 'roman'},
-        {title: 'Ana Karenjina', isbn: '1213j34h5jhj6', authors:['Lav Tolstoj'], year: 1877, rating: 9, genre: 'roman'},
-        {title: 'Znakovi pored puta', isbn: '1213j34h5jhj6', authors:['Ivo Andric'], year: 1976, rating: 9, genre: 'roman'},
-        {title: 'Most na Zepi', isbn: '1213j34h5jhj6', authors:['Ivo Andric'], year: 1925, rating: 9, genre: 'roman'}
-    ]
+import { useEffect, useState } from 'react';
+const ShowBooks = () => { 
+    const books = useLoaderData();
+    const [genres, setGenres] = useState([]);
+    const [filteredBooks, setFilteredBooks] = useState(books);
+
+    useEffect(() => { //A
+        let ignore = false; 
+        const ff = async () => { //B
+            let r = await fetch("http://localhost:8080/api/v1/genre");
+            let rr = await r.json();
+            if(!ignore){
+                setGenres(rr);
+            }
+        };
+        ff();
+        return () => { //C
+            ignore = true;
+        };
+    }, []);
+
+    const filterByGenre = (e) => {
+        console.log(e.target.value);
+        const filteredBooks = books.filter((b)=>{ console.log(b); return b.genre === e.target.value});
+        console.log(filteredBooks);
+        setFilteredBooks(filteredBooks)
+    }
     return <div className='books_container'> 
         {/* search part */}
             <header className="books_container_header">
-                    <input className='search' type="text" placeholder="Search..." />
-                    <select className='select_genre'> <option> Genre </option> </select>
-                    <button className='add_btn'> Add new book</button>
+                    <div class="input-container">
+                        <input className='input-field' type="text" placeholder="Search..." />
+                        <button className="search_button">Search</button>  
+                    </div>
+                    
+                    <select className='select_genre' onChange={filterByGenre}> 
+                    {console.log(genres)}
+                        {genres.map((g)=><option value={g.name}>{g.name}</option>)}
+                     </select>
+                    <button className='add_btn'><NavLink to="add_new">Add New Book</NavLink></button>
             </header>
             <div className="container_show_books">
-                {books.map((b) => <ShowBook book={b}/>)}
+                {filteredBooks.map((b) => <ShowBook book={b}/>)}
             </div>
          </div>
 }
