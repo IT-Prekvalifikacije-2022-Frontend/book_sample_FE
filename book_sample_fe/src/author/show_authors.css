@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 20px;
+    
     padding: 20px;
     height: 40px;
     background-color: #fff;
@@ -80,12 +80,13 @@
     color: rgb(28, 165, 200);
     font-weight: bold;
   }
-  .input-container {
+  .author_input-container {
     display: flex;
     width: 40%;
+    margin-bottom: 0px;
   }
   
-  .input-field {
+  .author_input-field {
     flex: 1;
     padding: 10px;
     border: 0.3px solid #ccc;
@@ -93,7 +94,7 @@
     position: relative;
   }
   
-  .search_button {
+  .author_search_button {
     padding: 10px 20px;
     background-color: #ccc;
     color: white;

@@ -45,8 +45,9 @@
 
 /* stavke menija */
 .sidenav_list_item {
-  padding: 20px 20px 20px 40px;
+  padding: 20px 20px 20px 20px;
   color: rgb(28, 165,200);
+  border-bottom: 1px solid rgb(28, 165,200);
 }
 
 /* prelaskom preko stavke menia pozadina stavke ce biti obojena u odredjenu boju, a kursor misa nece biti strelica nego ruka */

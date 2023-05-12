@@ -10,6 +10,8 @@ import ShowGenres from './genre/ShowGenres';
 import NewGenre from './genre/NewGenre';
 import NewAuthor from './author/NewAuthor';
 import NewBook from './book/NewBook';
+import Book from './book/Book';
+import EditBook from './book/EditBook';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,20 @@ const router = createBrowserRouter([
       {
         path:'books/add_new',
         element: <NewBook/>
+      },
+      {
+        path:'books/update/:id',
+        element: <EditBook/>,
+        loader: async({params}) => {
+          return fetch(`http://localhost:8080/api/v1/book/${params.id}`);
+        }
+      },
+      {
+        path:'/books/book/:id',
+        element: <Book/>,
+        loader: async({params}) => {
+          return fetch(`http://localhost:8080/api/v1/book/${params.id}`);
+        }
       }
     ]
   }
