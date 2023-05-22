@@ -71,8 +71,18 @@ const router = createBrowserRouter([
         element: <EditGenre/>,
         loader: async({params}) => {
           return fetch(`http://localhost:8080/api/v1/genre/${params.id}`);
-        }
+        },
+        action: async({params,request}) =>{
+          const data = Object.fromEntries(await request.formData());
+          return fetch(`http://localhost:8080/api/v1/genre/${params.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
       }
+    }
     ]
   }
 ])
