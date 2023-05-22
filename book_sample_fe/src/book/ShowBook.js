@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, Typography, Button, Grid, Rating } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const ShowBook = ({book, onDelete}) => {
@@ -20,23 +21,25 @@ const ShowBook = ({book, onDelete}) => {
         }
     }
 
-    return  <div key={book.id} className="book_overviewcard">
-                <div className="book_title_container"> <p className="book_title">{book.title} </p></div>
-                <div className="book__info">
-                    <div className="book_authors">{book.authors}</div>
-                    <div className="book_year">Year: {book.year}</div>
-                    <div className="book_isbn">ISBN: {book.isbn}</div>
-                    <div className="book_genre">Genre: {book.genre}</div>
-                    <div className="book_rating">Rating: {book.rating}</div>
-                </div>
-                <div>
-                    {/*Obratiti paznju na url koji se generise u zavisnosti od toga da li se stavi book/${book.id} ili /book/${book.id}*/}
-                    {/*U prvom primeru se kreira relativna putanja koja se samo doda na postojecu, dok se u drugom primeru definise apsolutna putanja*/}
-                    <button className="add_btn" onClick={()=>navigation(`book/${book.id}`)}>Book details</button>
-                    <button className="add_btn" onClick={deleteBook}>Delete book</button>
-                    <button className="add_btn" onClick={()=>navigation(`update/${book.id}`)}>Edit book</button>
-                </div>
-            </div>  
+    return  <Grid item xs={4}>    
+            <Card key={book.id} variant="outlined">
+                <CardHeader subheader={book.title} sx={{border:"1px solid gray", borderRadius: "3px 3px 0px 0px", textAlign:"center"}}/> 
+                <CardContent sx={{display:"flex", flexDirection:"column", alignContent:"center", flexWrap:"wrap"}}>
+                    <Typography >{book.authors}</Typography>
+                    <Typography >Year: {book.year}</Typography>
+                    <Typography >ISBN: {book.isbn}</Typography>
+                    <Typography >Genre: {book.genre}</Typography>
+                    <Rating value={book.rating} readOnly precision={0.5}/>
+                    <div>
+                        {/*Obratiti paznju na url koji se generise u zavisnosti od toga da li se stavi book/${book.id} ili /book/${book.id}*/}
+                        {/*U prvom primeru se kreira relativna putanja koja se samo doda na postojecu, dok se u drugom primeru definise apsolutna putanja*/}
+                        <Button onClick={()=>navigation(`book/${book.id}`)}>Details</Button>
+                        <Button onClick={deleteBook}>Delete</Button>
+                        <Button onClick={()=>navigation(`update/${book.id}`)}>Edit</Button>
+                    </div>
+                </CardContent>
+            </Card> 
+            </Grid> 
 }
 
 export default ShowBook;

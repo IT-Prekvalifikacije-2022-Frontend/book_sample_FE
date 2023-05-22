@@ -2,6 +2,9 @@ import { NavLink, useLoaderData, useNavigate } from 'react-router-dom';
 import ShowBook from './ShowBook';
 import './show_books.css'
 import { useEffect, useState } from 'react';
+import Button from '@mui/material/Button';
+import { FormControl, InputLabel, Select, MenuItem, Container, Box, Grid } from '@mui/material';
+
 const ShowBooks = () => { 
     const books = useLoaderData();
     const navigate = useNavigate();
@@ -42,24 +45,29 @@ const ShowBooks = () => {
         setFilteredBooks(fB);
     } 
 
-    return <div className='books_container'> 
-        {/* search part */}
-            <header className="books_container_header">
-                    <div class="book_input-container">
-                        <input className='book_input-field' type="text" placeholder="Search..." />
-                        <button className="book_search_button">Search</button>  
-                    </div>
-                    
-                    <select className='book_select_genre' onChange={filterByGenre}> 
-                        <option value="all">All</option>
-                        {genres.map((g)=><option value={g.name}>{g.name}</option>)}
-                     </select>
-                    <button className='add_btn' onClick={()=>{navigate('add_new')}}>Add New Book</button>
-            </header>
-            <div className="container_show_books">
+    return <Container> 
+            <Box sx={{display:"flex", justifyContent:"space-between", marginBottom:3}}>
+                     <FormControl sx={{width:"30%"}} size="small">
+                        <InputLabel id="filter">Filter</InputLabel>
+                        <Select
+                            labelId="filter"
+                            id="filter"
+                            label="Filter"
+                            onChange={filterByGenre}
+                        >
+                            <MenuItem value="all">
+                                <em>All</em>
+                            </MenuItem>
+                            {genres.map((g)=><MenuItem value={g.name}>{g.name}</MenuItem>)}
+                        </Select>
+                    </FormControl>
+
+                    <Button variant="outlined" onClick={()=>{navigate('add_new')}}>Add New Book</Button>
+            </Box>
+            <Grid container spacing={2}>
                 {filteredBooks.map((b) => <ShowBook onDelete={handleDelete} book={b}/>)}
-            </div>
-         </div>
+            </Grid>
+         </Container>
 }
 
 export default  ShowBooks;

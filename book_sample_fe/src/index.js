@@ -12,6 +12,7 @@ import NewAuthor from './author/NewAuthor';
 import NewBook from './book/NewBook';
 import Book from './book/Book';
 import EditBook from './book/EditBook';
+import EditGenre from './genre/EditGenre';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,13 @@ const router = createBrowserRouter([
         element: <Book/>,
         loader: async({params}) => {
           return fetch(`http://localhost:8080/api/v1/book/${params.id}`);
+        }
+      },
+      {
+        path:'genres/update/:id',
+        element: <EditGenre/>,
+        loader: async({params}) => {
+          return fetch(`http://localhost:8080/api/v1/genre/${params.id}`);
         }
       }
     ]

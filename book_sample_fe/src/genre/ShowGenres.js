@@ -1,26 +1,38 @@
 import { NavLink, useLoaderData, useNavigate } from "react-router-dom";
-import './show_genres.css'
+import { Box, Button, Container, Table, TableBody, TableRow, TableCell, TableContainer,Paper, TableHead } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+
 const ShowGenres = () => {
     const genres = useLoaderData();
     const navigate = useNavigate();
     console.log(genres);
 
-    return <div className='books_container'> 
-    {/* search part */}
-        <header className="books_container_header">
-            <div class="genre_input-container">
-                <input className='genre_input-field' type="text" placeholder="Search..." />
-                <button className="genre_search_button">Search</button>  
-            </div>
-            <button className='add_btn' onClick={()=>navigate('add_new')}>Add New Genre</button>
-        </header>
-        <div className="container_show_genres">
-            <ul className="genres_overviewcard">
-            {genres.map((g) => <li className="genre_item">{g.name}</li>)}
-            </ul>
-                
-        </div>
-     </div>
+    return <Container> 
+        <Box sx={{display:"flex", justifyContent:"end", marginBottom:3}}>
+            <Button variant="outlined" onClick={()=>navigate('add_new')}>Add New Genre</Button>
+        </Box>
+        <Box sx={{display:"flex", justifyContent:"center"}}>
+            <TableContainer component={Paper} sx={{width:'40%'}}>
+            <Table aria-label="simple table">
+                <TableBody>
+                {genres.map((g) => (
+                    <TableRow
+                    key={g.name}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell component="th" scope="row">
+                            {g.name}
+                        </TableCell>
+                        <TableCell>
+                            <EditIcon onClick={()=>navigate(`update/${g.id}`)} sx={{cursor:"pointer"}}/>
+                        </TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+            </TableContainer> 
+        </Box>
+     </Container>
 }
 
 export default ShowGenres;

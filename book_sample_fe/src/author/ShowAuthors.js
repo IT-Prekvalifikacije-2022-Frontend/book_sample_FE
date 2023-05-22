@@ -1,23 +1,18 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import ShowAuthor from "./ShowAuthor";
-import './show_authors.css'
+import { Container, Box, Button } from "@mui/material";
 const ShowAuthors = () => {
     const authors = useLoaderData();
     const navigation = useNavigate();
 
-    return <div className='authors_container'> 
-    {/* search part */}
-        <header className="authors_container_header">
-            <div class="author_input-container">
-                <input className='author_input-field' type="text" placeholder="Search..." />
-                <button className="author_search_button">Search</button>  
-            </div>
-            <button className='add_btn' onClick={()=>{navigation('add_new')}}>Add New Author</button>
-        </header>
-        <div className="container_show_authors">
+    return <Container> 
+        <Box sx={{display:"flex", justifyContent:"end", marginBottom:3}}>
+            <Button variant="outlined" onClick={()=>{navigation('add_new')}}>Add New Author</Button>
+        </Box>
+        <Box>
                 {authors.map((a) => <ShowAuthor author={a}/>)}
-        </div>
-     </div>
+        </Box>
+     </Container>
 }
 
 export default ShowAuthors;

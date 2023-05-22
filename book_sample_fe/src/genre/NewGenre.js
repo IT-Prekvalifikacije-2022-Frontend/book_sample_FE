@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './new_genres.css'
+import { Container, Box, TextField, Button } from '@mui/material';
 const NewGenre = () => {
     const [txt, setTxt] = useState("");
 
@@ -20,17 +20,14 @@ const NewGenre = () => {
                 console.log("Neuspeh slanja!");
             }
     }
-    return <div className='new-genre-container' >
-        <div className='form-container'>
-            <div className="input-container">            
-                    <div className="search_button">Genre name</div> 
-                    <input className='input-field' type="text" value={txt} onChange={(e) => {
-                        setTxt(e.target.value);
-                    }}/> 
-            </div>
-            <button className='save_btn' onClick={addNewGenre}>Save</button>
-        </div>
-    </div>
+    return <Container sx={{display:"flex", justifyContent:"center", alignContent:"center", flexWrap:"wrap", width:"40%"}}>
+        <Box sx={{display:"flex", width:"100%", flexDirection:"column", alignItems:"end"}}>       
+        <TextField sx={{width:"100%", marginBottom:4}} id="outlined-basic" label="Genre name" variant="outlined" value={txt} onChange={(e) => {
+                            setTxt(e.target.value);
+                        }}/>
+            <Button variant="outlined" onClick={addNewGenre}>Save</Button>
+        </Box>
+    </Container>
 }
 
 export default NewGenre;
