@@ -44,7 +44,17 @@ const EditGenre = () => {
         <Box sx={{display:"flex", width:"100%", flexDirection:"column", alignItems:"end"}}>       
         {showAlert && <Alert sx={{width:"100%", marginBottom:4}} onClose={() => {setShowAlert(false)}} severity={severity}>{message}</Alert>}
         <TextField sx={{width:"100%", marginBottom:4}} id="outlined-basic" label="Genre name" variant="outlined" value={newGenreName} 
-        onChange={(e)=>{setNewGenreName(e.target.value)}}
+        onChange={(e)=>{
+            if(e.target.value.includes(1)){
+                setShowError(true);
+                setHelperText("Zanr ne sme da sadrzi brojeve.");
+                setNewGenreName(e.target.value);
+            }else{
+                setShowError(false);
+                setHelperText("");
+                setNewGenreName(e.target.value);
+            }
+        }}
         required
         error={showError}   
         helperText={helperText} 
