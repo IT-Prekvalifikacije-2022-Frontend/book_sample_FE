@@ -23,7 +23,7 @@ const ShowBook = ({book, onDelete}) => {
 
     return  <Grid item xs={4}>    
             <Card key={book.id} variant="outlined">
-                <CardHeader subheader={book.title} sx={{border:"1px solid gray", borderRadius: "3px 3px 0px 0px", textAlign:"center"}}/> 
+                <CardHeader subheader={book.title} sx={{border:"1px solid gray", borderRadius: "3px 3px 0px 0px", textAlign:"center"}} subheaderTypographyProps={{fontWeight:"bold"}}/> 
                 <CardContent sx={{display:"flex", flexDirection:"column", alignContent:"center", flexWrap:"wrap"}}>
                     <Typography >{book.authors}</Typography>
                     <Typography >Year: {book.year}</Typography>
