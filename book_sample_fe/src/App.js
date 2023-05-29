@@ -23,8 +23,9 @@ import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { FormGroup, FormControlLabel, Switch, Button } from '@mui/material';
 
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useNavigation } from 'react-router-dom';
 import LoginModal from './LoginModal';
+import { useLogin } from './login_logic';
 
 const drawerWidth = 240;
 
@@ -112,10 +113,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+export const UserContext = React.createContext();
 
 export default function App() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const navigation = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -146,15 +149,11 @@ export default function App() {
   const [showModal, setShowModal] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(true);
 
-  React.useEffect(()=>{
-    const user = localStorage.getItem("user");
-    if(user!==null){
-      setIsLogin(false);
-    }
-  })
+  const [user, login, logout] = useLogin();
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+    <UserContext.Provider value={{user, login, logout}}>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
@@ -183,10 +182,10 @@ export default function App() {
           <FormGroup>
             <FormControlLabel control={<Switch checked={isDarkMode} onChange={handleThemeChange} />} label="Dark mode" />
           </FormGroup>
-          {isLogin ? (<Button color='inherit' onClick={()=>{setShowModal(true)}}>Login</Button>) :
+          {(!user) ? (<Button color='inherit' onClick={()=>{setShowModal(true)}}>Login</Button>) :
           (<Button color='inherit' onClick={()=>{
-            localStorage.clear();
-            setIsLogin(true);
+            logout();
+            navigation('/');
           }}>Logout</Button>)}
         </Toolbar>
       </AppBar>
@@ -243,6 +242,7 @@ export default function App() {
         </Outlet>
       </Main>
     </Box>
+    </UserContext.Provider>
     </ThemeProvider>
   );
 }

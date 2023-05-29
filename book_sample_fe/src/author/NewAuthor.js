@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { TextField, Button, Container, Box, Alert } from "@mui/material";
+import { UserContext } from "../App";
 
 const NewAuthor = () => {
     const [txt, setTxt] = useState("");
     const [showAlert, setShowAlert] = useState(false);
+    //const {user, login, logout} = useContext(UserContext);
 
     const addNewAuthor = async () => {
+            //logout();
             let response = await fetch("http://localhost:8080/api/v1/author", {
                 method: "POST",
                 headers: {

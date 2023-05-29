@@ -5,11 +5,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { UserContext } from './App';
 
 const LoginModal = ({onCloseModal}) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+
+    const {user, login, logout} = useContext(UserContext);
 
     const userLogin = () => {
            // localStorage.setItem("token", "1234abcd");
@@ -34,28 +37,8 @@ const LoginModal = ({onCloseModal}) => {
     }
 
     */
-        if(username === 'test' && password === 'test'){
-            const nuser = {
-              username: 'test',
-              name: 'Test Test',
-              token: 'abcd',
-              role: 'admin'
-            }
-
-            localStorage.setItem("user", JSON.stringify(nuser));
-        }else if(username === 'user' && password === 'user') {
-            const nuser = {
-              username: 'user',
-              name: 'User User',
-              token: '1234',
-              role: 'user'
-            }
-          localStorage.setItem("user", JSON.stringify(nuser));
-      }else{
-        return null;
-      }
-
-      onCloseModal();
+       const user = login(username, password);
+        onCloseModal();
     }
     return (
         <div>
