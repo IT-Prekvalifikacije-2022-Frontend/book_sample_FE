@@ -1,15 +1,17 @@
+import { produce } from "immer";
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 
 const EditBook = () => {
     const book = useLoaderData();
     console.log(book);
-    const [title, setTitle] = useState(book.title);
-    const [isbn, setIsbn] = useState(book.isbn);
-    const [year, setYear] = useState(book.year);
-    const [rating, setRating] = useState(book.rating);
-    const [genre, setGenre] = useState(book.genre);
-    const [author, setAuthor] = useState(book.authors[0]);
+    const [knjiga, setKnjiga] = useState(book);
+    //const [title, setTitle] = useState(book.title);
+    //const [isbn, setIsbn] = useState(book.isbn);
+    //const [year, setYear] = useState(book.year);
+    //const [rating, setRating] = useState(book.rating);
+    //const [genre, setGenre] = useState(book.genre);
+    //const [author, setAuthor] = useState(book.authors[0]);
 
     const [genres, setGenres] = useState([]);
     const [authors, setAuthors] = useState([]);
@@ -45,20 +47,21 @@ const EditBook = () => {
         };
     }, []);
 
+    const changeBook = (e) => {
+        setKnjiga(
+            produce((draftState)=>{
+                draftState[e.target.name] = e.target.value;
+            })
+        )           
+    }
+
     const updateBook = async () => {
             let response = await fetch(`http://localhost:8080/api/v1/book/${book.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    title: title,
-                    isbn: isbn,
-                    year: year,
-                    rating: rating,
-                    genre: genre,
-                    authors: [author]
-                }),
+                body: JSON.stringify(knjiga),
             });
             if(response.ok){
                 let d = await response.json();
@@ -71,37 +74,58 @@ const EditBook = () => {
         <div className='form-container'>
             <div className="input-container">            
                     <div className="search_button">Book title</div> 
-                    <input className='input-field' type="text" value={title} onChange={(e) => {
-                        setTitle(e.target.value);
+                    <input className='input-field' type="text" name="title" value={knjiga.title} 
+                    onChange={(e) => { changeBook(e)
+                        /*
+                        setKnjiga(
+                            produce((draftState)=>{
+                                draftState.title = e.target.value;
+                            })
+                        )
+                        */
+                        /*
+                          const knjiga2 = {
+                            ...knjiga
+                        };
+                        knjiga2.title = e.target.value;
+                        setKnjiga(knjiga2);
+                        */
                     }}/> 
             </div>
             <div className="input-container">  
                     <div className="search_button">ISBN</div> 
-                    <input className='input-field' type="text" value={isbn} onChange={(e) => {
-                        setIsbn(e.target.value);
+                    <input className='input-field' type="text" name="isbn" value={knjiga.isbn} 
+                    onChange={(e) => {
+                        changeBook(e)
                     }}/> 
             </div>
             <div className="input-container">  
                     <div className="search_button">Year</div> 
-                    <input className='input-field' type="text" value={year} onChange={(e) => {
-                        setYear(e.target.value);
+                    <input className='input-field' type="text" name="year" value={knjiga.year} onChange={(e) => {
+                         changeBook(e)
                     }}/> 
             </div>
             <div className="input-container">  
                     <div className="search_button">Rating</div> 
-                    <input className='input-field' type="text" value={rating} onChange={(e) => {
-                        setRating(e.target.value);
+                    <input className='input-field' type="text" name="rating" value={knjiga.rating} onChange={(e) => {
+                         changeBook(e)
                     }}/> 
             </div>
             <div className="input-container">  
-                <select className='select_genre' value={genre} onChange={(e) => setGenre(e.target.value)}> 
+                <select className='select_genre' value={knjiga.genre} name="genre" onChange={(e) =>  changeBook(e)}> 
                     {genres.map((g)=><option value={g.name}>{g.name}</option>)}
                 </select>
             </div>
             <div className="input-container">  
-                <select className='select_genre' value={author} onChange={(e) => setAuthor(e.target.value)}> 
+                <select className='select_genre' value={knjiga.authors[0]} name="authors" 
+                onChange={(e) =>{
+                    setKnjiga(
+                        produce((draftState => {
+                        draftState.authors[0] = e.target.value;
+                    })))}
+                }> 
                     
-                    {authors.map((a)=><option value={a.name}>{a.name}{console.log(author)}</option>)}
+                    {authors.map((a)=><option value={a.name}>{a.name}</option>)}
                 </select>
             </div>
             <button className='save_btn' onClick={updateBook}>Update</button>
