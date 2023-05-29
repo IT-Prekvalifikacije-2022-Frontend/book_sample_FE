@@ -13,6 +13,8 @@ import NewBook from './book/NewBook';
 import Book from './book/Book';
 import EditBook from './book/EditBook';
 import EditGenre from './genre/EditGenre';
+import { check_login } from './login_logic';
+import ErrorDisplay from './ErrorDisplay';
 
 const router = createBrowserRouter([
   {
@@ -23,13 +25,16 @@ const router = createBrowserRouter([
         path: 'books',
         element: <ShowBooks/>,
         loader: async() => {
+          const user = check_login(['admin']);
           return fetch('http://localhost:8080/api/v1/book');
-        }
+        },
+        errorElement: <ErrorDisplay entity="knjige"/>
       },
       {
         path: 'authors',
         element: <ShowAuthors/>,
         loader: async() => {
+          const user = check_login();
           return fetch('http://localhost:8080/api/v1/author');
         }
       },
@@ -37,6 +42,7 @@ const router = createBrowserRouter([
         path: 'genres',
         element: <ShowGenres/>,
         loader: async() => {
+          const user = check_login();
           return fetch('http://localhost:8080/api/v1/genre');
         }
       },
@@ -69,7 +75,9 @@ const router = createBrowserRouter([
       {
         path:'genres/update/:id',
         element: <EditGenre/>,
+        errorElement: <ErrorDisplay entity="zanr"/>,
         loader: async({params}) => {
+          const user = check_login(['admin']);
           return fetch(`http://localhost:8080/api/v1/genre/${params.id}`);
         },
         action: async({params,request}) =>{

@@ -21,9 +21,10 @@ import MailIcon from '@mui/icons-material/Mail';
 import { alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { FormGroup, FormControlLabel, Switch, Button } from '@mui/material';
 
 import { NavLink, Outlet } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
 const drawerWidth = 240;
 
@@ -141,6 +142,16 @@ export default function App() {
   const handleThemeChange = () => {
     setDarkMode(!isDarkMode);
   }
+ 
+  const [showModal, setShowModal] = React.useState(false);
+  const [isLogin, setIsLogin] = React.useState(true);
+
+  React.useEffect(()=>{
+    const user = localStorage.getItem("user");
+    if(user!==null){
+      setIsLogin(false);
+    }
+  })
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
@@ -172,6 +183,11 @@ export default function App() {
           <FormGroup>
             <FormControlLabel control={<Switch checked={isDarkMode} onChange={handleThemeChange} />} label="Dark mode" />
           </FormGroup>
+          {isLogin ? (<Button color='inherit' onClick={()=>{setShowModal(true)}}>Login</Button>) :
+          (<Button color='inherit' onClick={()=>{
+            localStorage.clear();
+            setIsLogin(true);
+          }}>Logout</Button>)}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -221,6 +237,7 @@ export default function App() {
 
       <Main open={open}>
         <DrawerHeader />
+        {showModal ? <LoginModal onCloseModal={()=>{setShowModal(false);}}/> : null}
         <Outlet>
 
         </Outlet>

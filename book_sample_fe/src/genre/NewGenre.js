@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Container, Box, TextField, Button } from '@mui/material';
+import { check_login } from '../login_logic';
 const NewGenre = () => {
     const [txt, setTxt] = useState("");
 
@@ -8,6 +9,7 @@ const NewGenre = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
                 },
                 body: JSON.stringify({
                     name: txt
